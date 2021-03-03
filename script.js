@@ -7,7 +7,7 @@ fetch('https://jsonplaceholder.typicode.com/albums')
 
 	.then((response) => {
 		for (let i = 0; i < response.length; i++) {
-			const albumItem = document.createElement('li')
+			const albumItem = document.createElement('li');
 			const responseAlbumItem = response[i].title;
 			albumItem.classList.add('album__item');
 			albumItem.innerHTML = responseAlbumItem;
@@ -15,6 +15,7 @@ fetch('https://jsonplaceholder.typicode.com/albums')
 			albumItem.dataset.idNumber = [i + 1];
 		}
 	})
+
 fetch('https://jsonplaceholder.typicode.com/photos')
 
 	.then((response) => response.json())
@@ -32,7 +33,6 @@ fetch('https://jsonplaceholder.typicode.com/photos')
 				photoLi.append(img);
 				albumPhotos.append(photoLi);
 			}
-
 		}
 	})
 
