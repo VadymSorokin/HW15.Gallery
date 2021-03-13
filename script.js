@@ -32,10 +32,13 @@ function renderPhotos(albumId = 1) {
 
 function renderAlbumPhotoEventListener() {
 	albumList.addEventListener('click', (event) => {
-		while (albumPhotos.firstChild) {
-			albumPhotos.removeChild(albumPhotos.firstChild);
-		}
+		clearAlbum();
 		const albumId = event.target.dataset.idNumber;
 		renderPhotos(albumId);
 	})
+}
+function clearAlbum() {
+	while (albumPhotos.firstChild) {
+		albumPhotos.removeChild(albumPhotos.firstChild);
+	}
 }
