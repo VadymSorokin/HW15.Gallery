@@ -20,7 +20,7 @@ function renderAlbums() {
 }
 
 function renderPhotos(albumId = 1) {
-	fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${Number(albumId)}`)
+	fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${albumId}`)
 		.then((response) => response.json())
 		.then((photoList) => {
 			for (let i = 0; i < photoList.length; i++) {
