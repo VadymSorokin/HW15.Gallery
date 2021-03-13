@@ -37,6 +37,7 @@ function renderAlbumPhotoEventListener() {
 		renderPhotos(albumId);
 	})
 }
+
 function clearAlbum() {
 	while (albumPhotos.firstChild) {
 		albumPhotos.removeChild(albumPhotos.firstChild);
