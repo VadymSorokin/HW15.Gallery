@@ -3,7 +3,6 @@ const albumPhotos = document.querySelector('.album__photos');
 
 function init() {
 	renderAlbums();
-	getFirstAlbumId()
 	renderPhotos();
 	renderAlbumPhotoEventListener();
 }
@@ -24,7 +23,12 @@ function renderAlbums() {
 		})
 }
 
-function renderPhotos(albumId) {
+function getFirstAlbumId() {
+	return sendGetRequestAlbums()
+		.then((response) => renderPhotos(response[0].id))
+}
+
+function renderPhotos(albumId = getFirstAlbumId()) {
 	fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${(albumId)}`)
 		.then((response) => response.json())
 		.then((photoList) => {
@@ -47,11 +51,6 @@ function clearAlbum() {
 	while (albumPhotos.firstChild) {
 		albumPhotos.removeChild(albumPhotos.firstChild);
 	}
-}
-
-function getFirstAlbumId() {
-	return sendGetRequestAlbums()
-		.then((response) => renderPhotos(response[0].id))
 }
 // Пытался использовать эту функцию , но она не срабатывает. Пишет , что null .
 // Хотя функция срабатывает , когда вставлял ее в  renderAlbumPhotoEventListener.
