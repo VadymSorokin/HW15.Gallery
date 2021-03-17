@@ -51,7 +51,6 @@ function createPhotoList(photoList) {
 
 function renderPhotos(photo) {
 	albumPhotos.insertAdjacentHTML('beforeend', photo);
-
 }
 
 function renderAlbumPhotoEventListener() {
