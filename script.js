@@ -39,9 +39,7 @@ function getFirstAlbumId() {
 function getAndRenderPhotos(albumId = firstAlbumId) {
 	fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${(albumId)}`)
 		.then((response) => response.json())
-		.then((photoList) => {
-			createPhotoList(photoList)
-		})
+		.then((photoList) => createPhotoList(photoList))
 }
 
 function createPhotoList(photoList) {
