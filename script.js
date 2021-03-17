@@ -1,9 +1,11 @@
 const albumList = document.querySelector('.album__list');
 const albumPhotos = document.querySelector('.album__photos');
+const firstAlbumId = getFirstAlbumId;
 
 function init() {
-	renderAlbums();
-	renderPhotos();
+	getFirstAlbumId();
+	getAndRenderAlbums();
+	getAndRenderPhotos();
 	renderAlbumPhotoEventListener();
 }
 init()
@@ -13,47 +15,55 @@ function sendGetRequestAlbums() {
 		.then((response) => response.json())
 }
 
-function renderAlbums() {
+function getAndRenderAlbums() {
 	sendGetRequestAlbums()
-		.then((album) => {
-			for (let i = 0; i < album.length; i++) {
-				const albumItem = `<li data-id-number="${[i + 1]}">album ${album[i].id}: ${album[i].title}</li>`;
-				albumList.insertAdjacentHTML('beforeend', albumItem);
-			}
-		})
+		.then((albums) => createAlbumItem(albums))
+}
+
+function createAlbumItem(albums) {
+	for (let i = 0; i < albums.length; i++) {
+		const albumItem = `<li data-id-number="${[i + 1]}">album ${albums[i].id}: ${albums[i].title}</li>`;
+		renderAlbums(albumItem);
+	}
+}
+
+function renderAlbums(albumItem) {
+	albumList.insertAdjacentHTML('beforeend', albumItem);
 }
 
 function getFirstAlbumId() {
 	return sendGetRequestAlbums()
-		.then((response) => renderPhotos(response[0].id))
+		.then((response) => getAndRenderPhotos(response[0].id))
 }
 
-function renderPhotos(albumId = getFirstAlbumId()) {
+function getAndRenderPhotos(albumId = firstAlbumId) {
 	fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${(albumId)}`)
 		.then((response) => response.json())
 		.then((photoList) => {
-			for (let i = 0; i < photoList.length; i++) {
-				const photo = `<li><img src="${photoList[i].url} alt="photo number ${photoList[i].id} from album ${albumId}"></li>`;
-				albumPhotos.insertAdjacentHTML('beforeend', photo);
-			}
+			createPhotoList(photoList)
 		})
+}
+
+function createPhotoList(photoList) {
+	for (let i = 0; i < photoList.length; i++) {
+		const photo = `<li><img src="${photoList[i].url} alt="photo number ${photoList[i].id}"></li>`;
+		renderPhotos(photo);
+	}
+}
+
+function renderPhotos(photo) {
+	albumPhotos.insertAdjacentHTML('beforeend', photo);
+
 }
 
 function renderAlbumPhotoEventListener() {
 	albumList.addEventListener('click', (event) => {
 		const albumId = event.target.dataset.idNumber;
 		clearAlbum();
-		renderPhotos(albumId);
+		getAndRenderPhotos(albumId);
 	})
 }
 
 function clearAlbum() {
-	while (albumPhotos.firstChild) {
-		albumPhotos.removeChild(albumPhotos.firstChild);
-	}
+	albumPhotos.innerHTML = '';
 }
-// Пытался использовать эту функцию , но она не срабатывает. Пишет , что null .
-// Хотя функция срабатывает , когда вставлял ее в  renderAlbumPhotoEventListener.
-//function getFirstAlbumId() {
-//	return albumList.firstElementChild.dataset.idNumber;
-//}
